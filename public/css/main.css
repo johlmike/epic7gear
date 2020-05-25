@@ -1,0 +1,12 @@
+.navbar {
+	border-bottom: 1px solid black;
+}
+
+
+.form-inlineGroup {
+	display: flex;
+}
+
+.form-inlineGroup > .form-group {
+	width: 50%;
+}
