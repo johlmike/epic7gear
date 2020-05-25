@@ -2,11 +2,15 @@
 	border-bottom: 1px solid black;
 }
 
+.gearForm-group {
+	margin-right: 5%;
+}
 
-.form-inlineGroup {
+.gearForm-inlineGroup {
 	display: flex;
 }
 
-.form-inlineGroup > .form-group {
-	width: 50%;
+.gearForm-inlineGroup > .form-group {
+	margin-right: 5%;
+	width: 45%;
 }

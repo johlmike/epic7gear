@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>第七史詩配裝器 - Epic 7 Gear Calculator by Johlmike</title>
+  <title>第七史詩配裝器 - Epic 7 Gear Calculator by Johlmike & Roxas</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/ddae8aa186.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -13,16 +13,16 @@
 <body>
   <div class="container">
     <header class="navbar">
-      <a class="navbar-brand mr-auto" href="#">第七史詩配裝器 by Johlmike</a>
+      <a class="navbar-brand mr-auto" href="#">第七史詩配裝器 by Johlmike & Roxas</a>
       <i class="fas fa-alicorn"></i>
     </header>
     <main>
       <section class="inputGear">
         <!-- <h1 class="inputGearTitle text-center mt-2">裝備輸入 Gear Input</h1> -->
         <form>
-          <div class="form-group">
+          <div class="form-group gearForm-group">
             <label for="set">套裝</label>
-            <select class="form-control" id="set">
+            <select class="form-control" id="set" required>
               <option value selected disabled hidden>(請選擇套裝)</option>
               <option value="attack">攻擊</option>
               <option value="defense">防禦</option>
@@ -38,9 +38,9 @@
               <option value="rage">憤怒</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group gearForm-group">
             <label for="slot">部位</label>
-            <select class="form-control" id="slot">
+            <select class="form-control" id="slot" required>
               <option value selected disabled hidden>(請選擇部位)</option>
               <option value="weapon">武器</option>
               <option value="helmet">頭盔</option>
@@ -50,10 +50,10 @@
               <option value="boots">鞋子</option>
             </select>
           </div>
-          <div class="form-inlineGroup">
+          <div class="gearForm-inlineGroup">
             <div class="form-group">
               <label for="mainStat-type">主屬性</label>
-              <select class="form-control" id="mainStat-type">
+              <select class="form-control" id="mainStat-type" required>
                 <option value selected disabled hidden>(請選擇屬性)</option>
                 <option value="atk">攻擊</option>
                 <option value="atk_p">攻擊%</option>
@@ -70,10 +70,10 @@
             </div>
             <div class="form-group">
               <label for="mainStat">數值</label>
-              <input type="number" class="form-control" id="mainStat" placeholder="輸入數值">
+              <input type="number" class="form-control" id="mainStat" min="1" max="1500" placeholder="輸入數值" required>
             </div>
           </div>
-          <div class="form-inlineGroup">
+          <div class="gearForm-inlineGroup">
             <div class="form-group">
               <label for="subStat1-type">副屬性</label>
               <select class="form-control" id="subStat1-type">
@@ -93,10 +93,10 @@
             </div>
             <div class="form-group">
               <label for="subStat1">數值</label>
-              <input type="number" class="form-control" id="subStat1" placeholder="輸入數值">
+              <input type="number" class="form-control" id="subStat1" min="1" max="1500" placeholder="輸入數值">
             </div>
           </div>
-          <div class="form-inlineGroup">
+          <div class="gearForm-inlineGroup">
             <div class="form-group">
               <select class="form-control" id="subStat2-type">
                 <option value selected disabled hidden>(請選擇屬性)</option>
@@ -114,10 +114,10 @@
               </select>
             </div>
             <div class="form-group">
-              <input type="number" class="form-control" id="subStat2" placeholder="輸入數值">
+              <input type="number" class="form-control" id="subStat2" min="1" max="1500" placeholder="輸入數值">
             </div>
           </div>
-          <div class="form-inlineGroup">
+          <div class="gearForm-inlineGroup">
             <div class="form-group">
               <select class="form-control" id="subStat3-type">
                 <option value selected disabled hidden>(請選擇屬性)</option>
@@ -135,10 +135,10 @@
               </select>
             </div>
             <div class="form-group">
-              <input type="number" class="form-control" id="subStat3" placeholder="輸入數值">
+              <input type="number" class="form-control" id="subStat3" min="1" max="1500" placeholder="輸入數值">
             </div>
           </div>
-          <div class="form-inlineGroup">
+          <div class="gearForm-inlineGroup">
             <div class="form-group">
               <select class="form-control" id="subStat4-type">
                 <option value selected disabled hidden>(請選擇屬性)</option>
@@ -156,11 +156,14 @@
               </select>
             </div>
             <div class="form-group">
-              <input type="number" class="form-control" id="subStat4" placeholder="輸入數值">
+              <input type="number" class="form-control" id="subStat4" min="1" max="1500" placeholder="輸入數值">
             </div>
           </div>
           <center>
-            <button type="submit" class="btn btn-primary mb-2" id="addGearBtn">新增裝備</button>
+            <button type="submit" class="btn btn-primary mb-2" id="addGearBtn">
+              <i class="fal fa-plus-circle"></i>
+              新增裝備
+            </button>
             <button type="reset" class="btn btn-danger mb-2">清空</button>
           </center>
         </form>
