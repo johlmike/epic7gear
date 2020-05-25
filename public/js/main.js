@@ -19,28 +19,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+//綁定檢查裝備部位事件
+$('#slot').on('change', function(event) {
+  event.preventDefault();
+  /* Act on the event */
+  checkSlot();
+});
+
+
+// 檢查裝備部位
 function checkSlot() {
   let slot = $('#slot').val();
   switch ( slot ){
     case 'weapon':
-      console.log('weapon');
+      $('#mainStat-type').val('atk');
+      $('#mainStat-type').attr('disabled', true);
       break;
     case 'helmet':
-      console.log('helmet');
+      $('#mainStat-type').val('hp');
+      $('#mainStat-type').attr('disabled', true);
       break;
     case 'armor':
-      console.log('armor');
+      $('#mainStat-type').val('def');
+      $('#mainStat-type').attr('disabled', true);
       break;
     case 'necklace':
-      console.log('necklace');
+      $('#mainStat-type').val('');
+      $('#mainStat-type').attr('disabled', false);
       break;
     case 'ring':
-      console.log('ring');
+      $('#mainStat-type').val('');
+      $('#mainStat-type').attr('disabled', false);
       break;
     case 'boots':
-      console.log('boots');
+      $('#mainStat-type').val('');
+      $('#mainStat-type').attr('disabled', false);
       break;
     default:
-      console.log('error');
   }
 }
