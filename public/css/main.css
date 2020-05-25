@@ -2,6 +2,13 @@
 	border-bottom: 1px solid black;
 }
 
+.userPhoto {
+	display: none;
+	height: 32px;
+	width: 32px;
+	border-radius: 50%;
+}
+
 .gearForm-group {
 	margin-right: 5%;
 }

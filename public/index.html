@@ -14,11 +14,14 @@
   <div class="container">
     <header class="navbar">
       <a class="navbar-brand mr-auto" href="#">第七史詩配裝器 by Johlmike & Roxas</a>
-      <i class="fas fa-alicorn"></i>
+      <button class="btn btn-primary" id="signInBtn">
+        <i class="fas fa-sign-in"></i>
+        Google 登入
+      </button>
+      <img src="#" class="userPhoto">
     </header>
     <main>
       <section class="inputGear">
-        <!-- <h1 class="inputGearTitle text-center mt-2">裝備輸入 Gear Input</h1> -->
         <form>
           <div class="form-group gearForm-group">
             <label for="set">套裝</label>
@@ -176,17 +179,15 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  <!-- update the version number as needed -->
-  <script defer src="/__/firebase/7.14.4/firebase-app.js"></script>
-  <!-- include only the Firebase features as you need -->
-  <script defer src="/__/firebase/7.14.4/firebase-auth.js"></script>
-  <script defer src="/__/firebase/7.14.4/firebase-database.js"></script>
-  <script defer src="/__/firebase/7.14.4/firebase-messaging.js"></script>
-  <script defer src="/__/firebase/7.14.4/firebase-storage.js"></script>
-  <!-- initialize the SDK after all desired features are loaded -->
-  <script defer src="/__/firebase/init.js"></script>
-  <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
-  <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
   <script type="text/javascript" src="./js/main.js"></script>
 </body>
 
