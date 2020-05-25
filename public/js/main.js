@@ -28,9 +28,12 @@ $('#slot').on('change', function(event) {
 
 //綁定新增裝備事件
 $('#addGearBtn').on('click', function(event) {
-  // event.preventDefault();
+  let formReady = false;
   /* Act on the event */
-  checkGearFrom();
+  formReady = checkGearFrom();
+  if (formReady) {
+    console.log('準備完畢');
+  }
 });
 
 
@@ -78,7 +81,7 @@ function setSubstat(slot) {
     let elem = `#subStat${i+1}-type`;
     let html = `<option value selected disabled hidden>(請選擇屬性)</option>`;
     $(elem).empty();
-    switch (slot){
+    switch (slot) {
       case 'weapon':
         html += `
           <option value="atk_p">攻擊%</option>
@@ -148,46 +151,63 @@ function checkGearFrom() {
   let mainStat = $('#mainStat').val();
   let subStatType = [];
   let subStat = [];
-
-  //取得所有副屬性的類別和數值
+  let ready = true;
+  // 取得所有副屬性的類別和數值
   for (let i = 0; i < 4; i++) {
     subStatType.push($(`#subStat${i+1}-type`).val());
     subStat.push($(`#subStat${i+1}`).val());
   }
 
+  /* 檢查開始 */
+  // 檢查所有必填項目已填
+  let required = $('input,select').filter('[required]:visible');
+  required.each(function() {
+    if ($(this).val() == '') {
+      console.log('錯誤！套裝、部位和主屬性為必填項目');
+      ready = false;
+    }
+  });
   // 全部副屬性都空的報錯
-  if( subStatType[0] == null && subStatType[1] == null && subStatType[2] == null && subStatType[3] == null ){
+  if (subStatType[0] == null && subStatType[1] == null && subStatType[2] == null && subStatType[3] == null) {
     console.log('錯誤！不得所有副屬性類別皆留空');
-    return false;
+    ready = false;
   }
   // 檢查所有副屬性類別不重複
-  if( getDuplicateArrayElements(subStatType).length != 0 ){
+  if (getDuplicateArrayElements(subStatType).length != 0) {
     let repeat = getDuplicateArrayElements(subStatType);
     let wrongError = true; //預設為誤報
     // 檢查是否是null誤報
     for (let i = 0; i < repeat.length; i++) {
-      if( repeat[i] != null ){
+      if (repeat[i] != null) {
         wrongError = false;
       }
     }
-    if( !wrongError ){
+    if (!wrongError) {
       console.log('錯誤！副屬性類別不得重複');
-      return false;
+      ready = false;
     }
-  } 
+  }
+  // 檢查是否有副屬性未有配對的數值
+  if( subStatType.filter(item => item != null).length != subStat.filter(item => item != "").length ){
+    console.log(subStatType.filter(item => item != null).length);
+    console.log(subStat.filter(item => item != "").length);
+      console.log('錯誤！請檢查副屬性是否填寫正確');
+      ready = false;
+  }
+  return ready;
 }
 
 
 
 
 // 檢查陣列中重複的數值
-function getDuplicateArrayElements(arr){
-    var sorted_arr = arr.slice().sort();
-    var results = [];
-    for (var i = 0; i < sorted_arr.length - 1; i++) {
-        if (sorted_arr[i + 1] === sorted_arr[i]) {
-            results.push(sorted_arr[i]);
-        }
+function getDuplicateArrayElements(arr) {
+  var sorted_arr = arr.slice().sort();
+  var results = [];
+  for (var i = 0; i < sorted_arr.length - 1; i++) {
+    if (sorted_arr[i + 1] === sorted_arr[i]) {
+      results.push(sorted_arr[i]);
     }
-    return results;
+  }
+  return results;
 }
