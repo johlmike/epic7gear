@@ -39,7 +39,7 @@
     /* Act on the event */
     formReady = checkGearFrom();
     if (formReady) {
-      console.log('準備完畢');
+      sendGearForm();
     }
   });
 
@@ -194,12 +194,6 @@
       }
     }
     // 檢查是否有副屬性未有配對的數值
-    // if (subStatType.filter(item => item != null).length != subStat.filter(item => item != "").length) {
-    //   console.log(subStatType.filter(item => item != null).length);
-    //   console.log(subStat.filter(item => item != "").length);
-
-    //   ready = false;
-    // }
     for (var i = 0; i < subStatType.length; i++) {
       if (subStatType[i] != "") {
         if (subStat[i] == "") {
@@ -215,6 +209,63 @@
       }
     }
     return ready;
+  }
+
+  function sendGearForm() {
+    let set = $('#set').val();
+    let slot = $('#slot').val();
+    let mainStatType = $('#mainStat-type').val();
+    let mainStat = $('#mainStat').val();
+    let subStatType = [];
+    let subStat = [];
+    let uuid = generateUUID();
+    let json;
+    // 取得所有副屬性的類別和數值
+    for (let i = 0; i < 4; i++) {
+      if ($(`#subStat${i+1}-type`).val() != "") {
+        subStatType.push($(`#subStat${i+1}-type`).val());
+      }
+      if ($(`#subStat${i+1}`).val() != "") {
+        subStat.push($(`#subStat${i+1}`).val());
+      }
+    }
+    // firestore讀寫測試成功
+    db.collection("users").doc(userID).collection("gearlist").add({
+        set: set,
+        slot: slot,
+        mainStatType: mainStatType,
+        mainStat: mainStat,
+        subStatType: subStatType,
+        subStat: subStat,
+        used: false,
+      })
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        getAllGear();
+      })
+      .catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
+  }
+
+  function getAllGear() {
+    // db.collection("users").doc(userID).collection("gearlist").get().then(function(doc) {
+    //   if (doc.exists) {
+    //     console.log("Document data:", doc.data());
+    //   } else {
+    //     // doc.data() will be undefined in this case
+    //     console.log("No such document!");
+    //   }
+    // }).catch(function(error) {
+    //   console.log("Error getting document:", error);
+    // });
+    db.collection("users").doc(userID).collection("gearlist").get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log("套裝", " => ", doc.data().set);
+
+      });
+    });
   }
 
   // google登入
@@ -248,30 +299,17 @@
       var isAnonymous = user.isAnonymous;
       var uid = user.uid;
       var providerData = user.providerData;
-      console.log(displayName);
-      console.log(email);
-      console.log(emailVerified);
-      console.log(photoURL);
-      console.log(isAnonymous);
-      console.log(uid);
-      console.log(providerData);
+      // console.log(displayName);
+      // console.log(email);
+      // console.log(emailVerified);
+      // console.log(photoURL);
+      // console.log(isAnonymous);
+      // console.log(uid);
+      // console.log(providerData);
       userID = uid;
       $('.userPhoto').attr('src', photoURL);
       $('.userPhoto').css('display', 'block');
       $('#signInBtn').css('display', 'none');
-
-      // firestore讀寫測試成功
-      // db.collection("users").doc(uid).set({
-      //     name: displayName,
-      // })
-      // .then(function(docRef) {
-      //     console.log("Document written with ID: ", docRef.id);
-      // })
-      // .catch(function(error) {
-      //     console.error("Error adding document: ", error);
-      // });
-
-
     } else {
       // User is signed out.
       // ...
@@ -291,4 +329,12 @@
     }
     return results;
   }
+
+  // 產生UUID
+  function generateUUID() {
+    // Math.random should be unique because of its seeding algorithm.
+    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+    // after the decimal.
+    return '_' + Math.random().toString(36).substr(2, 9);
+  };
 })();
