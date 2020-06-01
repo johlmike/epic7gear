@@ -15,6 +15,8 @@
   let provider = new firebase.auth.GoogleAuthProvider();
   let db = firebase.firestore();
 
+  // 全域變數設定
+  let userID;
 
   //綁定檢查裝備部位事件
   $('#slot').on('change', function(event) {
@@ -32,6 +34,7 @@
 
   //綁定新增裝備事件
   $('#addGearBtn').on('click', function(event) {
+    event.preventDefault();
     let formReady = false;
     /* Act on the event */
     formReady = checkGearFrom();
@@ -82,7 +85,7 @@
   function setSubstat(slot) {
     for (var i = 3; i >= 0; i--) {
       let elem = `#subStat${i+1}-type`;
-      let html = `<option value selected disabled hidden>(請選擇屬性)</option>`;
+      let html = `<option value selected>(請選擇屬性)</option>`;
       $(elem).empty();
       switch (slot) {
         case 'weapon':
@@ -171,7 +174,7 @@
       }
     });
     // 全部副屬性都空的報錯
-    if (subStatType[0] == null && subStatType[1] == null && subStatType[2] == null && subStatType[3] == null) {
+    if (subStatType[0] == "" && subStatType[1] == "" && subStatType[2] == "" && subStatType[3] == "") {
       console.log('錯誤！不得所有副屬性類別皆留空');
       ready = false;
     }
@@ -181,7 +184,7 @@
       let wrongError = true; //預設為誤報
       // 檢查是否是null誤報
       for (let i = 0; i < repeat.length; i++) {
-        if (repeat[i] != null) {
+        if (repeat[i] != "") {
           wrongError = false;
         }
       }
@@ -191,11 +194,25 @@
       }
     }
     // 檢查是否有副屬性未有配對的數值
-    if (subStatType.filter(item => item != null).length != subStat.filter(item => item != "").length) {
-      console.log(subStatType.filter(item => item != null).length);
-      console.log(subStat.filter(item => item != "").length);
-      console.log('錯誤！請檢查副屬性是否填寫正確');
-      ready = false;
+    // if (subStatType.filter(item => item != null).length != subStat.filter(item => item != "").length) {
+    //   console.log(subStatType.filter(item => item != null).length);
+    //   console.log(subStat.filter(item => item != "").length);
+
+    //   ready = false;
+    // }
+    for (var i = 0; i < subStatType.length; i++) {
+      if (subStatType[i] != "") {
+        if (subStat[i] == "") {
+          console.log('錯誤！請檢查副屬性是否填寫正確');
+          ready = false;
+        }
+
+      } else {
+        if (subStat[i] != "") {
+          console.log('錯誤！請檢查副屬性是否填寫正確');
+          ready = false;
+        }
+      }
     }
     return ready;
   }
@@ -238,6 +255,7 @@
       console.log(isAnonymous);
       console.log(uid);
       console.log(providerData);
+      userID = uid;
       $('.userPhoto').attr('src', photoURL);
       $('.userPhoto').css('display', 'block');
       $('#signInBtn').css('display', 'none');
