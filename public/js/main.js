@@ -1,5 +1,6 @@
 'use strict';
 
+
 (function() {
   let firebaseConfig = {
     apiKey: "AIzaSyDknJyMPJFVQCgCZVZO2Y5niEZaguseisA",
@@ -41,6 +42,13 @@
     if (formReady) {
       sendGearForm();
     }
+  });
+
+  //綁定匯入裝備事件
+  $('#importCsvBtn').on('click', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    setGearByCSV();
   });
 
   // 檢查裝備部位
@@ -249,23 +257,36 @@
   }
 
   function getAllGear() {
-    // db.collection("users").doc(userID).collection("gearlist").get().then(function(doc) {
-    //   if (doc.exists) {
-    //     console.log("Document data:", doc.data());
-    //   } else {
-    //     // doc.data() will be undefined in this case
-    //     console.log("No such document!");
-    //   }
-    // }).catch(function(error) {
-    //   console.log("Error getting document:", error);
-    // });
     db.collection("users").doc(userID).collection("gearlist").get().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
         // doc.data() is never undefined for query doc snapshots
         console.log("套裝", " => ", doc.data().set);
-
       });
     });
+  }
+
+  function setGearByCSV() {
+    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+      alert('The File APIs are not fully supported in this browser.');
+      return;
+    }
+
+    let input = document.getElementById('fileinput');
+    if (!input) {
+      alert("Um, couldn't find the fileinput element.");
+    } else if (!input.files) {
+      alert("This browser doesn't seem to support the `files` property of file inputs.");
+    } else if (!input.files[0]) {
+      alert("請選擇CSV檔案，再點選匯入");
+    } else {
+      let file = input.files[0];
+      let fr = new FileReader();
+      Papa.parse(file, {
+        complete: function(results) {
+          console.log("Finished:", results.data);
+        }
+      });
+    }
   }
 
   // google登入
