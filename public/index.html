@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>第七史詩配裝器 - Epic 7 Gear Calculator by Johlmike & Roxas</title>
+  <title>第七史詩配裝器 - Epic 7 Gear Calculator</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/ddae8aa186.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -176,9 +176,9 @@
         <center>
           <input type="file" id="fileinput">
           <button class="btn btn-primary mb-2" id="importCsvBtn">
-              <i class="far fa-file-import"></i>
-              匯入裝備
-            </button>
+            <i class="far fa-file-import"></i>
+            匯入裝備
+          </button>
         </center>
       </section>
     </main>
@@ -186,15 +186,28 @@
     <div class="row calculator"></div>
     <footer></footer>
   </div>
+  <!-- 錯誤訊息Modal -->
+  <div class="modal" tabindex="-1" role="dialog" id="errorModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">錯誤</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="errorMsg">
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
-
   <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
   <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
-
   <!-- Add Firebase products that you want to use -->
   <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>

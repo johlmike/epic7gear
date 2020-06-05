@@ -41,6 +41,8 @@
     formReady = checkGearFrom();
     if (formReady) {
       sendGearForm();
+    } else {
+      $('#errorModal').modal();
     }
   });
 
@@ -166,27 +168,33 @@
     let subStatType = [];
     let subStat = [];
     let ready = true;
+    let error = {
+      allRequired: true,
+      allSubStatNotEmpty: true,
+      subStatNotRepeat: true,
+      subStatCorrect: true,
+      mainStatSubStatNotRepeat: true,
+    };
+    let errorHtml = "";
     // 取得所有副屬性的類別和數值
     for (let i = 0; i < 4; i++) {
       subStatType.push($(`#subStat${i+1}-type`).val());
       subStat.push($(`#subStat${i+1}`).val());
     }
-
     /* 
     檢查開始
     */
-
     // 檢查所有必填項目已填
     let required = $('input,select').filter('[required]:visible');
     required.each(function() {
       if ($(this).val() == '' || $(this).val() == null) {
-        console.log('錯誤！套裝、部位和主屬性為必填項目');
+        error.allRequired = false;
         ready = false;
       }
     });
     // 全部副屬性都空的報錯
     if (subStatType[0] == "" && subStatType[1] == "" && subStatType[2] == "" && subStatType[3] == "") {
-      console.log('錯誤！不得所有副屬性類別皆留空');
+      error.allSubStatNotEmpty = false;
       ready = false;
     }
     // 檢查所有副屬性類別不重複
@@ -200,7 +208,7 @@
         }
       }
       if (!wrongError) {
-        console.log('錯誤！副屬性類別不得重複');
+        error.mainStatSubStatNotRepeat = false;
         ready = false;
       }
     }
@@ -208,13 +216,13 @@
     for (var i = 0; i < subStatType.length; i++) {
       if (subStatType[i] != "") {
         if (subStat[i] == "") {
-          console.log('錯誤！請檢查副屬性是否填寫正確');
+          error.subStatCorrect = false;
           ready = false;
         }
 
       } else {
         if (subStat[i] != "") {
-          console.log('錯誤！請檢查副屬性是否填寫正確');
+          error.subStatCorrect = false;
           ready = false;
         }
       }
@@ -222,10 +230,29 @@
     // 檢查主屬性和副屬性是否重複
     subStatType.forEach(function(type){
       if( mainStatType === type ){
-        console.log('錯誤！主屬性和副屬性不得重複');
+        error.subStatNotRepeat = false;
         ready = false;
       }
     });
+    // 設定錯誤訊息文字
+    if( !error.allRequired ){
+      errorHtml += "<p>套裝、部位和主屬性為必填項目</p>";
+    }
+    if( !error.allSubStatNotEmpty ){
+      errorHtml += "<p>不得所有副屬性類別皆留空</p>";
+    }
+    if( !error.mainStatSubStatNotRepeat ){
+      errorHtml += "<p>副屬性類別不得重複</p>";
+    }
+    if( !error.subStatCorrect ){
+      errorHtml += "<p>請檢查副屬性是否填寫正確</p>";
+    }
+    if( !error.subStatNotRepeat ){
+      errorHtml += "<p>主屬性和副屬性不得重複</p>";
+    }
+    // 填入錯誤訊息Modal
+    $("#errorMsg").html(errorHtml);
+    // 回傳Ready值
     return ready;
   }
 
@@ -299,7 +326,7 @@
           gears.forEach(function(gear) {
             db.collection("users").doc(userID).collection("gearlist").add(gear)
               .then(function(docRef) {
-                console.log("Document written with ID: ", docRef.id);
+                // console.log("Document written with ID: ", docRef.id);
                 getAllGear();
               })
               .catch(function(error) {
