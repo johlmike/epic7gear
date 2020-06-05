@@ -172,11 +172,14 @@
       subStat.push($(`#subStat${i+1}`).val());
     }
 
-    /* 檢查開始 */
+    /* 
+    檢查開始
+    */
+
     // 檢查所有必填項目已填
     let required = $('input,select').filter('[required]:visible');
     required.each(function() {
-      if ($(this).val() == '') {
+      if ($(this).val() == '' || $(this).val() == null) {
         console.log('錯誤！套裝、部位和主屬性為必填項目');
         ready = false;
       }
@@ -216,6 +219,13 @@
         }
       }
     }
+    // 檢查主屬性和副屬性是否重複
+    subStatType.forEach(function(type){
+      if( mainStatType === type ){
+        console.log('錯誤！主屬性和副屬性不得重複');
+        ready = false;
+      }
+    });
     return ready;
   }
 
@@ -227,6 +237,7 @@
     let subStatType = [];
     let subStat = [];
     let uuid = generateUUID();
+    let gear = { used: false };
     let json;
     // 取得所有副屬性的類別和數值
     for (let i = 0; i < 4; i++) {
@@ -237,16 +248,15 @@
         subStat.push($(`#subStat${i+1}`).val());
       }
     }
+    // 寫入裝備物件
+    gear.slot = slot;
+    gear.set = set;
+    gear[mainStatType] = mainStat;
+    subStatType.forEach(function(statType, index) {
+      gear[statType] = subStat[index];
+    });
     // firestore讀寫測試成功
-    db.collection("users").doc(userID).collection("gearlist").add({
-        set: set,
-        slot: slot,
-        mainStatType: mainStatType,
-        mainStat: mainStat,
-        subStatType: subStatType,
-        subStat: subStat,
-        used: false,
-      })
+    db.collection("users").doc(userID).collection("gearlist").add(gear)
       .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
         getAllGear();
@@ -266,11 +276,13 @@
   }
 
   function setGearByCSV() {
+    let gears = [];
+    // 確認使用者瀏覽器支援 file api
     if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
       alert('The File APIs are not fully supported in this browser.');
       return;
     }
-
+    // 讀取使用者選擇之檔案
     let input = document.getElementById('fileinput');
     if (!input) {
       alert("Um, couldn't find the fileinput element.");
@@ -283,8 +295,17 @@
       let fr = new FileReader();
       Papa.parse(file, {
         complete: function(results) {
-          console.log("Finished:", results.data.slice(1));
-          convertCSVresult(results.data.slice(1));
+          gears = convertCSVresult(results.data.slice(1));
+          gears.forEach(function(gear) {
+            db.collection("users").doc(userID).collection("gearlist").add(gear)
+              .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id);
+                getAllGear();
+              })
+              .catch(function(error) {
+                console.error("Error adding document: ", error);
+              });
+          });
         }
       });
     }
@@ -409,7 +430,7 @@
               break;
           }
         } else {
-          if (stat != ""){
+          if (stat != "") {
             switch (index) {
               case 2:
                 output.atk = stat;
@@ -451,7 +472,7 @@
       return output;
     });
     gears = gears.filter(gear => Object.keys(gear).length != 0);
-    console.log(gears);
+    return gears;
   }
 
   // 檢查陣列中重複的數值
