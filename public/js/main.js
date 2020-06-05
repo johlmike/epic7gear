@@ -18,6 +18,19 @@
 
   // 全域變數設定
   let userID;
+  let statTypeList = [
+    "atk",
+    "atk_p",
+    "def",
+    "def_p",
+    "hp",
+    "hp_p",
+    "spd",
+    "cric",
+    "crid",
+    "eff",
+    "res",
+  ];
 
   //綁定檢查裝備部位事件
   $('#slot').on('change', function(event) {
@@ -228,26 +241,26 @@
       }
     }
     // 檢查主屬性和副屬性是否重複
-    subStatType.forEach(function(type){
-      if( mainStatType === type ){
+    subStatType.forEach(function(type) {
+      if (mainStatType === type) {
         error.subStatNotRepeat = false;
         ready = false;
       }
     });
     // 設定錯誤訊息文字
-    if( !error.allRequired ){
+    if (!error.allRequired) {
       errorHtml += "<p>套裝、部位和主屬性為必填項目</p>";
     }
-    if( !error.allSubStatNotEmpty ){
+    if (!error.allSubStatNotEmpty) {
       errorHtml += "<p>不得所有副屬性類別皆留空</p>";
     }
-    if( !error.mainStatSubStatNotRepeat ){
+    if (!error.mainStatSubStatNotRepeat) {
       errorHtml += "<p>副屬性類別不得重複</p>";
     }
-    if( !error.subStatCorrect ){
+    if (!error.subStatCorrect) {
       errorHtml += "<p>請檢查副屬性是否填寫正確</p>";
     }
-    if( !error.subStatNotRepeat ){
+    if (!error.subStatNotRepeat) {
       errorHtml += "<p>主屬性和副屬性不得重複</p>";
     }
     // 填入錯誤訊息Modal
@@ -281,6 +294,12 @@
     gear[mainStatType] = mainStat;
     subStatType.forEach(function(statType, index) {
       gear[statType] = parseInt(subStat[index]);
+    });
+    // 補上沒有的副屬性並設定值為0
+    statTypeList.forEach(function(statType) {
+      if (!gear.hasOwnProperty(statType)) {
+        gear[statType] = 0;
+      }
     });
     // firestore讀寫測試成功
     db.collection("users").doc(userID).collection("gearlist").add(gear)
@@ -326,7 +345,7 @@
           gears.forEach(function(gear) {
             db.collection("users").doc(userID).collection("gearlist").add(gear)
               .then(function(docRef) {
-                // console.log("Document written with ID: ", docRef.id);
+                console.log("Document written with ID: ", docRef.id);
                 getAllGear();
               })
               .catch(function(error) {
@@ -457,49 +476,46 @@
               break;
           }
         } else {
-          if (stat != "") {
-            let statInt = parseInt(stat);
-            switch (index) {
-              case 2:
-                output.atk = statInt;
-                break;
-              case 3:
-                output.atk_p = statInt;
-                break;
-              case 4:
-                output.def = statInt;
-                break;
-              case 5:
-                output.def_p = statInt;
-                break;
-              case 6:
-                output.hp = statInt;
-                break;
-              case 7:
-                output.hp_p = statInt;
-                break;
-              case 8:
-                output.spd = statInt;
-                break;
-              case 9:
-                output.cric = statInt;
-                break;
-              case 10:
-                output.crid = statInt;
-                break;
-              case 11:
-                output.eff = statInt;
-                break;
-              case 12:
-                output.res = statInt;
-                break;
-            }
+          switch (index) {
+            case 2:
+              output.atk = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 3:
+              output.atk_p = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 4:
+              output.def = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 5:
+              output.def_p = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 6:
+              output.hp = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 7:
+              output.hp_p = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 8:
+              output.spd = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 9:
+              output.cric = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 10:
+              output.crid = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 11:
+              output.eff = stat === "" ? 0 : parseInt(stat);
+              break;
+            case 12:
+              output.res = stat === "" ? 0 : parseInt(stat);
+              break;
           }
         }
       });
       return output;
     });
-    gears = gears.filter(gear => Object.keys(gear).length > 1);
+    gears = gears.filter(gear => Object.keys(gear).length > 12);
     return gears;
   }
 
