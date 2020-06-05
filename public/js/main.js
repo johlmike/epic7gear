@@ -364,7 +364,7 @@
   // 轉換csv輸出結果
   function convertCSVresult(ary) {
     let gears = ary.map(function(gear, index) {
-      let output = { used = false };
+      let output = { used: false };
       gear.forEach(function(stat, index) {
         if (index == 0) {
           switch (stat) {
