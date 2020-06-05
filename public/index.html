@@ -13,7 +13,7 @@
 <body>
   <div class="container">
     <header class="navbar">
-      <a class="navbar-brand mr-auto" href="#">第七史詩配裝器 by Johlmike & Roxas</a>
+      <a class="navbar-brand mr-auto" href="#">第七史詩配裝器</a>
       <button class="btn btn-primary" id="signInBtn">
         <i class="fas fa-sign-in"></i>
         Google 登入
@@ -172,7 +172,14 @@
           </center>
         </form>
       </section>
+      <hr>
       <section>
+        <center>
+          <h3>裝備匯入教學</h3>
+          <p>
+            請下載<a href="./file/裝備清單範例.xlsx">裝備清單範例</a>，依格式將裝備輸入後，轉存成CSV檔案，再從下方選擇檔案並匯入即可！
+          </p>
+        </center>
         <center>
           <input type="file" id="fileinput">
           <button class="btn btn-primary mb-2" id="importCsvBtn">
@@ -186,6 +193,7 @@
     <div class="row calculator"></div>
     <footer></footer>
   </div>
+
   <!-- 錯誤訊息Modal -->
   <div class="modal" tabindex="-1" role="dialog" id="errorModal">
     <div class="modal-dialog">
