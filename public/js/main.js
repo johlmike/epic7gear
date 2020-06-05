@@ -472,7 +472,7 @@
       });
       return output;
     });
-    gears = gears.filter(gear => Object.keys(gear).length != 0);
+    gears = gears.filter(gear => Object.keys(gear).length > 1);
     return gears;
   }
 
