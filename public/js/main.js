@@ -450,14 +450,7 @@
       });
       return output;
     });
-    // gears = gears.filter(function(gear){
-    //   console.log(Object.keys(gear).length);
-    //   console.log(Object.keys(gear).length != 0);
-    //   return Object.keys(gear).length != 0;
-    // });
-
     gears = gears.filter(gear => Object.keys(gear).length != 0);
-
     console.log(gears);
   }
 
