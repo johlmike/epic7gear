@@ -233,7 +233,7 @@
     let set = $('#set').val();
     let slot = $('#slot').val();
     let mainStatType = $('#mainStat-type').val();
-    let mainStat = $('#mainStat').val();
+    let mainStat = parseInt($('#mainStat').val());
     let subStatType = [];
     let subStat = [];
     let uuid = generateUUID();
@@ -253,7 +253,7 @@
     gear.set = set;
     gear[mainStatType] = mainStat;
     subStatType.forEach(function(statType, index) {
-      gear[statType] = subStat[index];
+      gear[statType] = parseInt(subStat[index]);
     });
     // firestore讀寫測試成功
     db.collection("users").doc(userID).collection("gearlist").add(gear)
@@ -364,7 +364,7 @@
   // 轉換csv輸出結果
   function convertCSVresult(ary) {
     let gears = ary.map(function(gear, index) {
-      let output = {};
+      let output = { used = false };
       gear.forEach(function(stat, index) {
         if (index == 0) {
           switch (stat) {
@@ -431,39 +431,40 @@
           }
         } else {
           if (stat != "") {
+            let statInt = parseInt(stat);
             switch (index) {
               case 2:
-                output.atk = stat;
+                output.atk = statInt;
                 break;
               case 3:
-                output.atk_p = stat;
+                output.atk_p = statInt;
                 break;
               case 4:
-                output.def = stat;
+                output.def = statInt;
                 break;
               case 5:
-                output.def_p = stat;
+                output.def_p = statInt;
                 break;
               case 6:
-                output.hp = stat;
+                output.hp = statInt;
                 break;
               case 7:
-                output.hp_p = stat;
+                output.hp_p = statInt;
                 break;
               case 8:
-                output.spd = stat;
+                output.spd = statInt;
                 break;
               case 9:
-                output.cric = stat;
+                output.cric = statInt;
                 break;
               case 10:
-                output.crid = stat;
+                output.crid = statInt;
                 break;
               case 11:
-                output.eff = stat;
+                output.eff = statInt;
                 break;
               case 12:
-                output.res = stat;
+                output.res = statInt;
                 break;
             }
           }
