@@ -283,7 +283,8 @@
       let fr = new FileReader();
       Papa.parse(file, {
         complete: function(results) {
-          console.log("Finished:", results.data);
+          console.log("Finished:", results.data.slice(1));
+          convertCSVresult(results.data.slice(1));
         }
       });
     }
@@ -338,6 +339,127 @@
       $('#signInBtn').css('display', 'block');
     }
   });
+
+  // 轉換csv輸出結果
+  function convertCSVresult(ary) {
+    let gears = ary.map(function(gear, index) {
+      let output = {};
+      gear.forEach(function(stat, index) {
+        if (index == 0) {
+          switch (stat) {
+            case '武器':
+              output.slot = 'weapon';
+              break;
+            case '頭盔':
+              output.slot = 'helmet';
+              break;
+            case '盔甲':
+              output.slot = 'armor';
+              break;
+            case '項鍊':
+              output.slot = 'necklace';
+              break;
+            case '戒指':
+              output.slot = 'ring';
+              break;
+            case '鞋子':
+              output.slot = 'boots';
+              break;
+          }
+        } else if (index == 1) {
+          switch (stat) {
+            case '攻擊':
+              output.set = 'attack';
+              break;
+            case '防禦':
+              output.set = 'defense';
+              break;
+            case '生命':
+              output.set = 'health';
+              break;
+            case '速度':
+              output.set = 'speed';
+              break;
+            case '暴擊':
+              output.set = 'critical';
+              break;
+            case '破滅':
+              output.set = 'destruction';
+              break;
+            case '命中':
+              output.set = 'hit';
+              break;
+            case '抵抗':
+              output.set = 'resist';
+              break;
+            case '吸血':
+              output.set = 'lifesteal';
+              break;
+            case '反擊':
+              output.set = 'counter';
+              break;
+            case '夾攻':
+              output.set = 'unity';
+              break;
+            case '免疫':
+              output.set = 'immunity';
+              break;
+            case '憤怒':
+              output.set = 'rage';
+              break;
+          }
+        } else {
+          if (stat != ""){
+            switch (index) {
+              case 2:
+                output.atk = stat;
+                break;
+              case 3:
+                output.atk_p = stat;
+                break;
+              case 4:
+                output.def = stat;
+                break;
+              case 5:
+                output.def_p = stat;
+                break;
+              case 6:
+                output.hp = stat;
+                break;
+              case 7:
+                output.hp_p = stat;
+                break;
+              case 8:
+                output.spd = stat;
+                break;
+              case 9:
+                output.cric = stat;
+                break;
+              case 10:
+                output.crid = stat;
+                break;
+              case 11:
+                output.eff = stat;
+                break;
+              case 12:
+                output.res = stat;
+                break;
+            }
+          }
+        }
+      });
+      return output;
+    });
+    // gears = gears.filter(function(gear){
+    //   console.log(Object.keys(gear).length);
+    //   console.log(Object.keys(gear).length != 0);
+    //   return Object.keys(gear).length != 0;
+    // });
+
+    gears = gears.filter(gear => Object.keys(gear).length != 0);
+
+    console.log(gears);
+  }
 
   // 檢查陣列中重複的數值
   function getDuplicateArrayElements(arr) {
