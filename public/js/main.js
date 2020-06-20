@@ -346,7 +346,7 @@
             db.collection("users").doc(userID).collection("gearlist").add(gear)
               .then(function(docRef) {
                 console.log("Document written with ID: ", docRef.id);
-                getAllGear();
+                // getAllGear();
               })
               .catch(function(error) {
                 console.error("Error adding document: ", error);
